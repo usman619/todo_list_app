@@ -2,16 +2,27 @@ import 'package:hive/hive.dart';
 import 'package:todo_list_app/todo_item.dart';
 
 class TodoService {
-  final String _boxName = 'todoBox';
-  Future<Box<ToDoItem>> get _box async =>
-      await Hive.openBox<ToDoItem>(_boxName);
+  // Private constructor
+  TodoService._privateConstructor();
 
-  Future<void> addItem(ToDoItem todoItem) async {
+  // Singleton instance
+  static final TodoService _instance = TodoService._privateConstructor();
+
+  // Factory constructor to return the singleton instance
+  factory TodoService() {
+    return _instance;
+  }
+
+  final String _boxName = 'todoBox';
+  Future<Box<TodoItem>> get _box async =>
+      await Hive.openBox<TodoItem>(_boxName);
+
+  Future<void> addItem(TodoItem todoItem) async {
     var box = await _box;
     await box.add(todoItem);
   }
 
-  Future<List<ToDoItem>> getAllItems() async {
+  Future<List<TodoItem>> getAllItems() async {
     var box = await _box;
     return box.values.toList();
   }
@@ -21,7 +32,7 @@ class TodoService {
     await box.delete(index);
   }
 
-  Future<void> updateIsDone(int index, ToDoItem todoItem) async {
+  Future<void> updateIsDone(int index, TodoItem todoItem) async {
     var box = await _box;
     todoItem.isDone = !todoItem.isDone;
     await box.putAt(index, todoItem);

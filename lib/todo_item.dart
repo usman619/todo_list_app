@@ -2,11 +2,11 @@ import 'package:hive/hive.dart';
 part 'todo_item.g.dart';
 
 @HiveType(typeId: 1)
-class ToDoItem {
+class TodoItem {
   @HiveField(0)
   String title;
-  @HiveField(1, defaultValue: false)
+  @HiveField(1)
   bool isDone;
 
-  ToDoItem(this.title, this.isDone);
+  TodoItem(this.title, {this.isDone = false});
 }
